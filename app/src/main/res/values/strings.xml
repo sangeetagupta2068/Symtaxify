@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GoogleSheetsExample</string>
+
+    <!--personal details-->
+    <string name="question_zero_1">Respondent\'s name:</string>
+    <string name="question_zero_2">Gender:</string>
+    <string name="question_zero_3">Year of Joining:</string>
+    <string name="question_zero_4">Contact Number (Mobile):</string>
+</resources>
