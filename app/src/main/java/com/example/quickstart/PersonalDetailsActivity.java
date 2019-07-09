@@ -61,7 +61,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
     ProgressDialog mProgress;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     //change to write mode
-    private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
+    private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS};
 
     //view declaration
     private RadioGroup genderRadioGroup;
