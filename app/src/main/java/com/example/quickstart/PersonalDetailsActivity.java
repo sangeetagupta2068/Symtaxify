@@ -36,6 +36,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.AppendValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import java.io.IOException;
@@ -56,11 +57,14 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
     //variable declaration
     private String yearOfJoiningValue;
     private String genderValue;
+    private String nameValue;
+    private String contactValue;
     private ArrayList<String> yearsOfJoiningList;
     GoogleAccountCredential mCredential;
     ProgressDialog mProgress;
     private static final String PREF_ACCOUNT_NAME = "accountName";
-    //change to write mode
+
+    //Google sheets write mode permission
     private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS};
 
     //view declaration
@@ -141,10 +145,13 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                nameValue = editTextRespondentName.getText().toString();
+                contactValue = editTextRespondentNumber.getText().toString();
                 //Logging values
-                String value = "\nName: " + editTextRespondentName.getText().toString()
+                String value = "\nName: " + nameValue
                         + "\nGender: " + genderValue
-                        + "\nContact number: " + editTextRespondentNumber.getText().toString() + "\nYear of joining:" + yearOfJoiningValue;
+                        + "\nContact number: " + contactValue + "\nYear of joining:" + yearOfJoiningValue;
                 Log.i("PERSONAL_DETAILS_VALUES", value);
                 getResultsFromApi();
 
@@ -171,6 +178,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         }
     }
 
+    //choose account for accessing Google Sheets
     @AfterPermissionGranted(REQUEST_PERMISSION_GET_ACCOUNTS)
     private void chooseAccount() {
         if (EasyPermissions.hasPermissions(
@@ -264,6 +272,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         return (networkInfo != null && networkInfo.isConnected());
     }
 
+    //check if Play Services are available
     private boolean isGooglePlayServicesAvailable() {
         GoogleApiAvailability apiAvailability =
                 GoogleApiAvailability.getInstance();
@@ -272,6 +281,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         return connectionStatusCode == ConnectionResult.SUCCESS;
     }
 
+    //install Google Play Services for device
     private void acquireGooglePlayServices() {
         GoogleApiAvailability apiAvailability =
                 GoogleApiAvailability.getInstance();
@@ -282,6 +292,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         }
     }
 
+    //show error message if Play services couldn't be found
     void showGooglePlayServicesAvailabilityErrorDialog(
             final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
@@ -308,7 +319,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         @Override
         protected List<String> doInBackground(Void... params) {
             try {
-                return getDataFromApi();
+                return setDataToGoogleSheetsAPI();
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
@@ -316,10 +327,23 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
             }
         }
 
-        private List<String> getDataFromApi() throws IOException {
+        //Set the form data of PersonalDetails to Google Sheets and display all row values as Toast Message
+        private List<String> setDataToGoogleSheetsAPI() throws IOException {
+            //set spreadsheet id to our sheet
             String spreadsheetId = "1qlAiJVvYUTjSYkLHjnFRgGVW5m9U2zYGy0hNZFKz_d8";
-//            String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
+            //set the table range
             String range = "Sheet1!A2:D";
+            //create the Object to be appened to the row
+            List<List<Object>> respondentRowValues = Arrays.asList(Arrays.asList((Object)nameValue,(Object)genderValue,(Object)contactValue,(Object)yearOfJoiningValue));
+            //append the object
+            ValueRange respondentRecord = new ValueRange().setValues(respondentRowValues);
+            AppendValuesResponse result =
+                    this.mService.spreadsheets().values().append(spreadsheetId, range,respondentRecord)
+                            .setValueInputOption("RAW")
+                            .execute();
+            System.out.printf("%d cells appended.", result.getUpdates().getUpdatedCells());
+
+            //retrieve row values from sheets and add it to the list of objects
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
@@ -352,6 +376,7 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
             }
         }
 
+        //if request was cancelled or error occured during data retrieval from sheet
         @Override
         protected void onCancelled() {
             mProgress.hide();
