@@ -44,18 +44,20 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends Activity
-        implements EasyPermissions.PermissionCallbacks {
+public class MainActivity extends Activity implements EasyPermissions.PermissionCallbacks {
+    //variable declaration
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     private Button mCallApiButton;
     ProgressDialog mProgress;
 
+    //constant initialization
     static final int REQUEST_ACCOUNT_PICKER = 1000;
     static final int REQUEST_AUTHORIZATION = 1001;
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
+    //string constant initialization
     private static final String BUTTON_TEXT = "GET RECORD";
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS_READONLY};
@@ -63,6 +65,7 @@ public class MainActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //layout creation
         LinearLayout activityLayout = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -75,6 +78,7 @@ public class MainActivity extends Activity
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        //initializing api call button
         mCallApiButton = new Button(this);
         mCallApiButton.setText(BUTTON_TEXT);
         mCallApiButton.setBackgroundColor(getResources().getColor(R.color.colorBlack));
@@ -88,8 +92,10 @@ public class MainActivity extends Activity
                 mCallApiButton.setEnabled(true);
             }
         });
+        //adding this button to layout
         activityLayout.addView(mCallApiButton);
 
+        //initializing output data text view
         mOutputText = new TextView(this);
         mOutputText.setLayoutParams(tlp);
         mOutputText.setPadding(16, 16, 16, 16);
@@ -97,27 +103,34 @@ public class MainActivity extends Activity
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
         mOutputText.setText(
                 "Click the \'" + BUTTON_TEXT + "\' button to get all records.");
+        //adding this text view to layout
         activityLayout.addView(mOutputText);
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Sheets API ...");
 
+        //setting layout for this acitivity
         setContentView(activityLayout);
 
-        // Initialize credentials and service object.
+        //initializing credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
     }
 
     private void getResultsFromApi() {
+        //check if google play services are available
         if (!isGooglePlayServicesAvailable()) {
+            //if not then install
             acquireGooglePlayServices();
         } else if (mCredential.getSelectedAccountName() == null) {
+            //choose user google account for accessing sheet
             chooseAccount();
         } else if (!isDeviceOnline()) {
+            //if no network, display no network message
             mOutputText.setText("No network connection available.");
         } else {
+            //start background task for retrieving data from Google Sheets
             new MakeRequestTask(mCredential).execute();
         }
     }
@@ -126,10 +139,13 @@ public class MainActivity extends Activity
     private void chooseAccount() {
         if (EasyPermissions.hasPermissions(
                 this, Manifest.permission.GET_ACCOUNTS)) {
+            //if permission exists, get user account name in private mode
             String accountName = getPreferences(Context.MODE_PRIVATE)
                     .getString(PREF_ACCOUNT_NAME, null);
             if (accountName != null) {
+                //set credential user name to account name if account name isn't null
                 mCredential.setSelectedAccountName(accountName);
+                //call this again to connect to API
                 getResultsFromApi();
             } else {
                 // Start a dialog from which the user can choose an account
@@ -262,7 +278,7 @@ public class MainActivity extends Activity
                 return null;
             }
         }
-
+        
         private List<String> getDataFromApi() throws IOException {
             String spreadsheetId = "1qlAiJVvYUTjSYkLHjnFRgGVW5m9U2zYGy0hNZFKz_d8";
 //            String spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms";
