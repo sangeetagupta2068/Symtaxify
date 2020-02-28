@@ -287,14 +287,24 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
                     .execute();
+
             List<List<Object>> values = response.getValues();
             if (values != null) {
                 results.add("\n\n");
                 for (List row : values) {
-                    results.add("Name: " + row.get(0) + " Gender: " + row.get(1) + " Contact Number:" + row.get(2) + " Year of Joining" + row.get(3) + "\n\n");
+                    results.add("Name: "
+                            + row.get(0)
+                            + " Gender: "
+                            + row.get(1)
+                            + " Contact Number:"
+                            + row.get(2)
+                            + " Year of Joining"
+                            + row.get(3)
+                            + "\n\n");
                 }
             }
             return results;
+
         }
 
 
@@ -336,5 +346,8 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
             }
         }
     }
+
+
+
 }
 

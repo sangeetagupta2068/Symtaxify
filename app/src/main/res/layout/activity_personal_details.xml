@@ -5,29 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PersonalDetailsActivity">
-    <TextView
-        android:id="@+id/respondent_name_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="84dp"
-        android:text="@string/question_zero_1"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personal_details_label" />
 
     <EditText
         android:id="@+id/respondent_name_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_width="325dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:ems="10"
-        android:layout_marginRight="20dp"
+        android:hint="@string/question_zero_1"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/respondent_name_label"
-        app:layout_constraintStart_toEndOf="@+id/respondent_name_label"
-        app:layout_constraintTop_toTopOf="@+id/respondent_name_label" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/respondent_gender_label"
@@ -36,22 +30,15 @@
         android:layout_marginTop="28dp"
         android:text="@string/question_zero_2"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/respondent_name_label"
-        app:layout_constraintTop_toBottomOf="@+id/respondent_name_edit_text" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="26dp"
-        app:layout_constraintStart_toEndOf="@+id/respondent_gender_label"
-        app:layout_constraintTop_toBottomOf="@+id/respondent_name_edit_text">
+        app:layout_constraintTop_toBottomOf="@+id/respondent_name_edit_text"
+        tools:layout_editor_absoluteX="16dp" />
 
         <RadioGroup
             android:id="@+id/gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/respondent_gender_label"
+            app:layout_constraintTop_toTopOf="@+id/respondent_gender_label"
             android:orientation="horizontal">
 
             <RadioButton
@@ -70,17 +57,16 @@
                 android:text="Female"
                 android:textSize="20sp" />
         </RadioGroup>
-    </LinearLayout>
+
     <TextView
         android:id="@+id/respondent_year_of_joining_label"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/question_zero_3"
+        android:layout_height="26dp"
         android:layout_marginTop="28dp"
+        android:text="@string/question_zero_3"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/respondent_name_label"
-        app:layout_constraintTop_toBottomOf="@+id/respondent_gender_label"
-        tools:layout_editor_absoluteY="202dp" />
+        app:layout_constraintStart_toStartOf="@+id/respondent_gender_label"
+        app:layout_constraintTop_toBottomOf="@+id/respondent_gender_label" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -90,56 +76,35 @@
         app:layout_constraintBottom_toBottomOf="@+id/respondent_year_of_joining_label"
         app:layout_constraintStart_toEndOf="@+id/respondent_year_of_joining_label"
         app:layout_constraintTop_toTopOf="@+id/respondent_year_of_joining_label" />
-    <TextView
-        android:id="@+id/respondent_contact_number_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/question_zero_4"
-        android:layout_marginTop="28dp"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/respondent_name_label"
-        app:layout_constraintTop_toBottomOf="@+id/respondent_year_of_joining_label"
-        tools:layout_editor_absoluteY="202dp" />
 
     <EditText
         android:id="@+id/respondent_contact_number_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="@+id/respondent_contact_number_label"
-        app:layout_constraintStart_toEndOf="@+id/respondent_contact_number_label"
-        app:layout_constraintTop_toTopOf="@+id/respondent_contact_number_label" />
-
-    <TextView
-        android:id="@+id/personal_details_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
-        android:textSize="40sp"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        android:text="Personal Details"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="@string/question_zero_4"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/respondent_year_of_joining_label"
+        app:layout_constraintTop_toBottomOf="@+id/respondent_year_of_joining_label" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:background="@color/colorBlack"
         android:text="next"
         android:textColor="#ffffff"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/respondent_contact_number_edit_text" />
 

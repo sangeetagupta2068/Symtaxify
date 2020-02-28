@@ -62,8 +62,8 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
     private ArrayList<String> yearsOfJoiningList;
     GoogleAccountCredential mCredential;
     ProgressDialog mProgress;
-    private static final String PREF_ACCOUNT_NAME = "accountName";
 
+    private static final String PREF_ACCOUNT_NAME = "accountName";
     //Google sheets write mode permission
     private static final String[] SCOPES = {SheetsScopes.SPREADSHEETS};
 
@@ -82,6 +82,8 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         setContentView(R.layout.activity_personal_details);
         initializePersonalDetailsSection();
         setListeners();
+
+        setTitle("Personal Details");
     }
 
     private void initializePersonalDetailsSection() {
@@ -108,7 +110,8 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
         for (int i = 2000; i <= thisYear; i++) {
             yearsOfJoiningList.add(Integer.toString(i));
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, yearsOfJoiningList);
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, yearsOfJoiningList);
         yearOfJoiningItem.setAdapter(adapter);
 
     }
@@ -352,12 +355,21 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
             if (values != null) {
                 results.add("\n\n");
                 for (List row : values) {
-                    results.add("Name: " + row.get(0) + " Gender: " + row.get(1) + " Contact Number:" + row.get(2) + " Year of Joining" + row.get(3) + "\n\n");
+                    results.add(new StringBuilder().
+                            append("Name: ").
+                            append(row.get(0)).
+                            append(" Gender: ").
+                            append(row.get(1)).
+                            append(" Contact Number:").
+                            append(row.get(2)).
+                            append(" Year of Joining").
+                            append(row.get(3)).
+                            append("\n\n").toString());
                 }
             }
+
             return results;
         }
-
 
         @Override
         protected void onPreExecute() {
@@ -395,6 +407,12 @@ public class PersonalDetailsActivity extends AppCompatActivity implements EasyPe
                 }
             } else {
                 Log.e("REQUEST_CANCELLED","Request cancelled.");
+            }
+
+
+            int[] yearOfJoining = new int[10];
+            for(int count : yearOfJoining){
+                //operation
             }
         }
     }
